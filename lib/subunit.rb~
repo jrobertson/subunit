@@ -1,0 +1,22 @@
+#!/usr/bin/ruby
+# file: subunit.rb
+
+class Subunit
+
+  def initialize(raw_units=[], raw_subunit=0)
+    units = multiply_units(raw_units).reverse
+    @a = scan_units(units, raw_subunit)    
+  end
+
+  def to_a() @a.map{|x| x >= 1 ? x.to_i : 0} end
+
+  private
+
+  def multiply_units(x) x.inject([]){|r,x| r + [x.to_i * (r[-1] || 1)]} end
+
+  def scan_units(unit_list,raw_subunit)
+    n = unit_list.shift    
+    unit, subunit = [:/,:%].map{|x| raw_subunit.send x, n}  
+    unit_list.length > 0 ? [unit] + scan_units(unit_list, subunit) : [unit, subunit]
+  end
+end
