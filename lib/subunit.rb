@@ -1,4 +1,5 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+
 # file: subunit.rb
 
 class Subunit
@@ -7,6 +8,26 @@ class Subunit
   
   def initialize(raw_units=nil, raw_subunit=0)
     method((raw_units.class.to_s.downcase + '_units').to_sym).call(raw_units, raw_subunit)
+  end
+  
+  def to_s()
+    
+    list = @to_h.to_a
+    n = list.find {|_,v| v > 0 }
+    a = list[list.index(n)..-1].map {|x|"%d %s" % x.reverse}        
+        
+    duration = case a.length
+
+    when 1
+      a.first  
+    when 2
+      a.join ' and '
+    else                   
+      "%s and %s" % [a[0..-2].join(', '), a[-1]]
+    end
+    
+    duration.gsub(/(\b1 \w+)s/, '\1')
+
   end
 
   private
