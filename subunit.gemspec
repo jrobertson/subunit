@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'subunit'
-  s.version = '0.2.6'
+  s.version = '0.2.7'
   s.summary = 'subunit'
     s.authors = ['James Robertson']
   s.files = Dir['lib/subunit.rb'] 

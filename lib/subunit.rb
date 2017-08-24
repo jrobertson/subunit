@@ -10,9 +10,12 @@ class Subunit
     method((raw_units.class.to_s.downcase + '_units').to_sym).call(raw_units, raw_subunit)
   end
   
-  def to_s()
+  def to_s(omit: [])
     
-    list = @to_h.to_a
+    h = @to_h
+    omit.each {|x| h.delete x}
+
+    list = h.to_a
     n = list.find {|_,v| v > 0 }
     a = list[list.index(n)..-1].map {|x|"%d %s" % x.reverse}        
         
