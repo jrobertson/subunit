@@ -48,10 +48,15 @@ class Subunit
   end  
   
   def hash_units(raw_units={}, u=nil)
+    
     val, label = method((u.class.to_s.downcase + '_subunit').to_sym).call(u)
     units = multiply_units(raw_units.values).reverse
-    @to_a = scan_units(units, val).map(&:to_i)
-    @to_h = Hash[(raw_units.keys.reverse + [label]).zip(@to_a)]
+    @to_a  = a = scan_units(units, val).map(&:to_i).reverse\
+        .take_while {|x| x != 0}.reverse
+    
+    puts 'a: ' + a.inspect
+    @to_h = Hash[(raw_units.keys.reverse + [label]).reverse.take(a.length)\
+                 .reverse.zip(a)]
   end
 
   def array_units(raw_units=[], u=nil)
@@ -68,4 +73,3 @@ class Subunit
     unit_list.length > 0 ? [unit] + scan_units(unit_list, subunit) : [unit, subunit]
   end
 end
-
