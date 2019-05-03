@@ -4,10 +4,24 @@
 
 class Subunit
 
-  attr_reader :to_a, :to_h
+  attr_reader :to_a, :to_h, :to_i
   
-  def initialize(raw_units=nil, raw_subunit=0)
-    method((raw_units.class.to_s.downcase + '_units').to_sym).call(raw_units, raw_subunit)
+  def initialize(raw_units=nil, obj)
+    
+    if obj.is_a? Array then
+      
+      a = obj
+      len = raw_units.to_a.length
+      @to_i = ([0]*(len-1) + a).slice(-(len), len).zip([60, 60, 1])\
+          .inject(0) {|r,x| r + x.inject(:*) }
+      
+    else
+      
+      raw_subunit = obj || 0
+      method((raw_units.class.to_s.downcase + '_units').to_sym)\
+          .call(raw_units, raw_subunit)
+      
+    end
   end
   
   def to_s(omit: [])
@@ -73,3 +87,4 @@ class Subunit
     unit_list.length > 0 ? [unit] + scan_units(unit_list, subunit) : [unit, subunit]
   end
 end
+
