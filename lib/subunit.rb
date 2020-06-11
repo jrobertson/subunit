@@ -6,7 +6,9 @@ class Subunit
 
   attr_reader :to_a, :to_h, :to_i
   
-  def initialize(raw_units=nil, obj)
+  def initialize(raw_units={}, obj)
+    
+    @debug = false
     
     if obj.is_a? Array then
       
@@ -65,12 +67,13 @@ class Subunit
     
     val, label = method((u.class.to_s.downcase + '_subunit').to_sym).call(u)
     units = multiply_units(raw_units.values).reverse
-    @to_a  = a = scan_units(units, val).map(&:to_i).reverse\
-        .take_while {|x| x != 0}.reverse
+    puts 'units: ' + units.inspect if @debug
+    @to_a  = a = scan_units(units, val).map(&:to_i)   
     
-    puts 'a: ' + a.inspect
-    @to_h = Hash[(raw_units.keys.reverse + [label]).reverse.take(a.length)\
-                 .reverse.zip(a)]
+    puts 'a: ' + a.inspect if @debug
+    pairs = (raw_units.keys.reverse + [label]).reverse.take(a.length)\
+                 .reverse.zip(a).select {|x| x[1] > 0}
+    @to_h = Hash[pairs]
   end
 
   def array_units(raw_units=[], u=nil)
