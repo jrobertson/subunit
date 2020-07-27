@@ -26,7 +26,12 @@ class Subunit
     end
   end
   
-  def to_s(omit: [])
+  def to_s(omit: [], verbose: true)
+    
+    if not verbose then
+      return self.to_a.reverse.take_while {|x| x > 0}.reverse\
+          .map {|x| "%02d" % x}.join(':') 
+    end
     
     h = @to_h
     omit.each {|x| h.delete x}
