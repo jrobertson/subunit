@@ -12,10 +12,11 @@ class Subunit
     
     if obj.is_a? Array then
       
-      a = obj
+      a = obj[0..-2]
       len = raw_units.to_a.length
-      @to_i = ([0]*(len-1) + a).slice(-(len), len).zip([60, 60, 1])\
+      val = ([0]*(len-1) + a).slice(-(len), len).zip(raw_units.values)\
           .inject(0) {|r,x| r + x.inject(:*) }
+      @to_i = val + obj[-1]
       
     else
       
@@ -29,8 +30,18 @@ class Subunit
   def to_s(omit: [], verbose: true)
     
     if not verbose then
-      return self.to_a.reverse.take_while {|x| x > 0}.reverse\
-          .map {|x| "%02d" % x}.join(':') 
+      
+      r =  self.to_a.reverse.take_while {|x| x > 0}.reverse\
+          .map {|x| "%02d" % x}.join(':')
+      
+      if r.length < 2 then
+        return '00:00'
+      elsif r.length == 2      
+        return '00:' + r
+      else
+        return r
+      end
+      
     end
     
     h = @to_h
