@@ -1,3 +1,15 @@
+# Subunit: Formatting seconds to hours, minutes and seconds
+
+    require 'subunit'
+
+    Subunit.new(units={minutes:60, hours:60}, seconds: 661).strfunit("%x") #=> "11m 1s"
+
+In the above example, using the method *strfunit*, seconds is converted to hours, minutes and seconds.
+
+subunit
+
+----------------------------
+
 # Using the Subunit gem to fracture seconds to hours, minutes, and seconds
 
     require 'subunit'
