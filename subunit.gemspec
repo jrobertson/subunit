@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'subunit'
-  s.version = '0.5.2'
+  s.version = '0.6.0'
   s.summary = 'Input a raw unit and it returns the denomination.'
     s.authors = ['James Robertson']
   s.files = Dir['lib/subunit.rb'] 

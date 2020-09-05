@@ -27,6 +27,16 @@ class Subunit
     end
   end
   
+  # usage: Subunit.new(units={minutes:60, hours:60}, seconds: 661)\
+  #           .strfunit("%x") #=> 11m 1s
+  #
+  def strfunit(s)
+    
+    s2 = to_h.map {|label, val| val.to_s + label[0]}.join(' ')
+    s.sub('%x', s2)
+
+  end
+  
   def to_s(omit: [], verbose: true)
     
     if not verbose then
