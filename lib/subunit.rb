@@ -30,11 +30,28 @@ class Subunit
   # usage: Subunit.new(units={minutes:60, hours:60}, seconds: 661)\
   #           .strfunit("%x") #=> 11m 1s
   #
-  def strfunit(s)
+  # %x e.g. 11m 1s
+  # %X e.g. 11 minutes 1 second
+  #
+  def strfunit(s)    
     
-    s2 = to_h.map {|label, val| val.to_s + label[0]}.join(' ')
-    s.sub('%x', s2)
+    s.sub!('%x') do |x|
+      to_h.map {|label, val| val.to_s + label[0]}.join(' ')
+    end
+    
+    s.sub!('%X') do |x|
+      
+      to_h.map do |label, val| 
+        
+        next if val == 0
+        label2 = val > 1 ? label.to_s : label.to_s.sub(/s$/,'')
+        val.to_s + ' ' + label2
+        
+      end.compact.join(' ')
+      
+    end    
 
+    s
   end
   
   def to_s(omit: [], verbose: true)
