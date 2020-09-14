@@ -10,6 +10,8 @@ class Subunit
     
     @debug = false
     
+    @raw_units = raw_units
+    
     if obj.is_a? Array then
       
       a = obj[0..-2]
@@ -32,6 +34,7 @@ class Subunit
   #
   # %x e.g. 11m 1s
   # %X e.g. 11 minutes 1 second
+  # %c e.g. 00:11:01
   #
   def strfunit(s)    
     
@@ -49,6 +52,15 @@ class Subunit
         
       end.compact.join(' ')
       
+    end    
+    
+    s.sub!('%c') do |x|
+      
+      a = @raw_units.values.reverse
+      a << a[-1]
+      
+      fmt = a.map {|v| "%0" + v.to_s.length.to_s + "d"}.join(":")
+      fmt % to_a
     end    
 
     s
