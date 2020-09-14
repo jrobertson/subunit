@@ -1,3 +1,19 @@
+# Converting seconds to hours, minues, and seconds using Subunit
+
+## Usage
+
+    require 'subunit'
+
+    Subunit.seconds(121).to_s           #=> "2 minutes and 1 second"
+    Subunit.seconds(121).strfunit("%x") #=> "2m 1s"
+    Subunit.seconds(121).strfunit("%X") #=> "2 minutes 1 second"
+    Subunit.seconds(121).strfunit("%c") #=> "00:02:01"
+
+
+subunit seconds duration
+
+-----------------------------
+
 # Subunit: Formatting seconds to hours, minutes and seconds
 
     require 'subunit'
