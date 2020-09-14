@@ -3,6 +3,10 @@
 # file: subunit.rb
 
 class Subunit
+  
+  def self.seconds(val)
+    new(units={minutes:60, hours:60}, seconds: val)
+  end
 
   attr_reader :to_a, :to_h, :to_i
   
