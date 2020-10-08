@@ -20,6 +20,10 @@ class Subunit
     new(units={minutes:60, hours:60}, seconds: val)
   end
 
+  def self.hms_to_seconds(obj)
+    new(units={hours:60, minutes:60,seconds: 60, }, obj).to_i
+  end  
+
   attr_reader :to_a, :to_h, :to_i
   
   def initialize(raw_units={}, obj)
@@ -27,14 +31,12 @@ class Subunit
     @debug = false
     
     @raw_units = raw_units
+        
+    accumulate = ->(a) {
     
-    
-    accumulate = ->(obj) {
-      a = obj[0..-2]
       len = raw_units.to_a.length
       val = ([0]*(len-1) + a).slice(-(len), len).zip(raw_units.values)\
-          .inject(0) {|r,x| r + x.inject(:*) }
-      val + obj[-1]      
+          .inject(0) {|r,x| r * x[1] + x[0] }    
     }
     
     if obj.is_a? String
@@ -170,3 +172,4 @@ class Subunit
     unit_list.length > 0 ? [unit] + scan_units(unit_list, subunit) : [unit, subunit]
   end
 end
+
