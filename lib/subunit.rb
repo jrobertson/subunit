@@ -2,6 +2,18 @@
 
 # file: subunit.rb
 
+module SubunitFracture
+  
+  refine Integer do
+    
+    def strfunit(s)
+      Subunit.seconds(self).strfunit(s)
+    end
+    
+  end
+  
+end
+
 class Subunit
   
   def self.seconds(val)
@@ -16,13 +28,22 @@ class Subunit
     
     @raw_units = raw_units
     
-    if obj.is_a? Array then
-      
+    
+    accumulate = ->(obj) {
       a = obj[0..-2]
       len = raw_units.to_a.length
       val = ([0]*(len-1) + a).slice(-(len), len).zip(raw_units.values)\
           .inject(0) {|r,x| r + x.inject(:*) }
-      @to_i = val + obj[-1]
+      val + obj[-1]      
+    }
+    
+    if obj.is_a? String
+      
+      @to_i = accumulate.call obj.split(' ').map(&:to_i)
+          
+    elsif obj.is_a? Array then
+            
+      @to_i = accumulate.call obj
       
     else
       
@@ -149,4 +170,3 @@ class Subunit
     unit_list.length > 0 ? [unit] + scan_units(unit_list, subunit) : [unit, subunit]
   end
 end
-
