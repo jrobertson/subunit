@@ -16,10 +16,13 @@ end
 
 class Subunit
   
-  def self.seconds(val)
-    new(units={minutes:60, hours:60}, seconds: val)
+  def self.seconds(val, units: nil)
+    new(units={minutes:60, hours:60, days:24}, seconds: val)
   end
 
+  # e.g. Subunit.hms_to_seconds('5 minutes and 4 seconds')
+  # => 304   
+  #
   def self.hms_to_seconds(obj)
     new(units={hours:60, minutes:60,seconds: 60, }, obj).to_i
   end  
@@ -41,7 +44,7 @@ class Subunit
     
     if obj.is_a? String
       
-      @to_i = accumulate.call obj.split(' ').map(&:to_i)
+      @to_i = accumulate.call obj.split(/\D+/).map(&:to_i)
           
     elsif obj.is_a? Array then
             
