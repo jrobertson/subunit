@@ -65,6 +65,8 @@ class Subunit
   # %x e.g. 11m 1s
   # %X e.g. 11 minutes 1 second
   # %c e.g. 00:11:01
+  # %s e.g. 11m # returns the 1st most significant value while 
+  #               ignoring the remainder
   #
   def strfunit(s)    
     
@@ -91,6 +93,11 @@ class Subunit
       
       fmt = a.map {|v| "%0" + v.to_s.length.to_s + "d"}.join(":")
       fmt % to_a
+    end    
+    
+    s.sub!('%s') do |x|
+      label, val = to_h.first 
+      val.to_s + label[0]
     end    
 
     s
