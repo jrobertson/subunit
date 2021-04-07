@@ -77,16 +77,18 @@ class Subunit
     
     s.sub!(/%xi?/) do |x|
       
-      a = to_h.to_a
-      a2 = (a.length > 1 and x[-1][/i$/]) ? a[0..-2] : a
+      h = to_h
+      a = h.to_a
+      a2 = (a.length > 1 and x[-1][/i$/] and h[:seconds]) ? a[0..-2] : a
       a2.map {|label, val| val.to_s + label[0]}.join(' ')
       
     end
     
     s.sub!(/%Xi?/) do |x|
 
-      a = to_h.to_a
-      a2 = (a.length > 1 and x[-1][/i$/]) ? a[0..-2] : a      
+      h = to_h
+      a = h.to_a
+      a2 = (a.length > 1 and x[-1][/i$/] and h[:seconds]) ? a[0..-2] : a
       
       a2.map do |label, val| 
         
