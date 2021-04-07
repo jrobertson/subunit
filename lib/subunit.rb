@@ -63,20 +63,32 @@ class Subunit
   #           .strfunit("%x") #=> 11m 1s
   #
   # %x e.g. 11m 1s
+  # %xi e.g. 11m
   # %X e.g. 11 minutes 1 second
+  # %Xi e.g. 11 minutes
   # %c e.g. 00:11:01
   # %s e.g. 11m # returns the 1st most significant value while 
   #               ignoring the remainder
   #
   def strfunit(s)    
     
-    s.sub!('%x') do |x|
-      to_h.map {|label, val| val.to_s + label[0]}.join(' ')
+    # The i switch postfixed to the x or X switch will format the output 
+    # without seconds unless there are no minutes.
+    
+    s.sub!(/%xi?/) do |x|
+      
+      a = to_h.to_a
+      a2 = (a.length > 1 and x[-1][/i$/]) ? a[0..-2] : a
+      a2.map {|label, val| val.to_s + label[0]}.join(' ')
+      
     end
     
-    s.sub!('%X') do |x|
+    s.sub!(/%Xi?/) do |x|
+
+      a = to_h.to_a
+      a2 = (a.length > 1 and x[-1][/i$/]) ? a[0..-2] : a      
       
-      to_h.map do |label, val| 
+      a2.map do |label, val| 
         
         next if val == 0
         label2 = val > 1 ? label.to_s : label.to_s.sub(/s$/,'')
