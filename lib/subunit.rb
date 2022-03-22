@@ -116,7 +116,7 @@ class Subunit
       a << a[-1]
 
       fmt = a.map {|v| "%0" + v.to_s.length.to_s + "d"}.join(":")
-      (fmt % to_a).gsub(/^(?:00:)+/,'').sub(/^0/,'')
+      (fmt % to_a).gsub(/^(?:00:)*(?=[0-9]{2}:[0-9]{2})/,'').sub(/^0/,'')
     end
 
     s.sub!('%s') do |x|
